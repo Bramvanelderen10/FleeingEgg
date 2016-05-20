@@ -39,7 +39,7 @@ public class PlayerController : GameComponent {
         //if ismoving move towards the target
         if (isMoving)
         {
-            if (Input.GetButtonDown(Utils.ConvertTypeToString(currentTargetType)))
+            if (Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
                 m_current_speed = m_current_speed / 3;
             }
@@ -67,7 +67,7 @@ public class PlayerController : GameComponent {
 
         } else if (target != null)
         {
-            if (currentTargetType != Type.None && Input.GetButtonDown(Utils.ConvertTypeToString(currentTargetType)))
+            if (currentTargetType != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
                 isMoving = true;
                 target.GetComponent<QuickTimeEventController>().TriggerPopUp();
