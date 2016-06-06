@@ -5,6 +5,7 @@ using QuickTimeEvent;
 public class GameManager : GameComponent {
 
     public GameObject movingEnviroment;
+    public ComboGenerator cg;
 
     public GameObject startText;
 
@@ -60,7 +61,7 @@ public class GameManager : GameComponent {
 	    if (movingEnviroment.transform.position.x - last_me_position.x > qte_distance)
         {
             last_me_position = movingEnviroment.transform.position;
-            SpawnCombo(qte_spawn.position);
+            //SpawnCombo(qte_spawn.position);
         }
 	}
 
@@ -145,7 +146,7 @@ public class GameManager : GameComponent {
             spawnLocation.x += qte_distance;
             last_qte_position = spawnLocation;
 
-            SpawnCombo(spawnLocation);
+            //SpawnCombo(spawnLocation);
         }
         last_me_position = movingEnviroment.transform.position;
 
@@ -179,5 +180,7 @@ public class GameManager : GameComponent {
         mec.isActive = active;
         isActive = active;
         startText.SetActive(!active);
+
+        cg.StartGenerator(active);
     }
 }

@@ -63,6 +63,7 @@ namespace QuickTimeEvent
                 selected = GetRandomType(rnd, excludeList, false);
             }
 
+            excludeList.Remove(Type.None);
             return selected;
         }
     }

@@ -21,7 +21,6 @@ public class ComboGenerator : MonoBehaviour {
         INSANE
     }
 
-    public GameManager gameManager;
     public GameObject QTEPrefab;
     public GameObject QTESpawn;
 
@@ -142,18 +141,14 @@ public class ComboGenerator : MonoBehaviour {
                     break;
                 case ComboType.CURVED:
                     if (spawnPosition.y >= 0 && i == 0)
-                    {
                         curveMultiplier *= -1;
-                    }
                     spawnPosition.y += curveMultiplier * (i * i);
                     spawnPosition.x += distance * i;
                     spawn.transform.position = spawnPosition;
                     break;
                 case ComboType.DIAGONAL:
                     if (spawnPosition.y >= 0 && i == 0)
-                    {
                         upwardDistance *= -1;
-                    }
                     spawnPosition.x += distance * i;
                     spawnPosition.y += upwardDistance * i;
                     spawn.transform.position = spawnPosition;
@@ -161,19 +156,14 @@ public class ComboGenerator : MonoBehaviour {
             }            
 
             QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
-            lastQTE = qteC;
+            
             if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
             {
-
                 qteC.type = qteTypes[typeCounter];
                 if (typeCounter + 1 > qteTypes.Count)
-                {
                     typeCounter = 0;
-                }
                 else
-                {
                     typeCounter++;
-                }
             }
             else
             {
@@ -200,31 +190,24 @@ public class ComboGenerator : MonoBehaviour {
                         break;
                 }
             }
-        }
-
-
-        switch (type)
-        {
-            case ComboType.STRAIGHT:
-                
-
-                break;
-            case ComboType.CURVED:
-
-                break;
-            case ComboType.DIAGONAL:
-
-                break;
+            lastQTE = qteC;
+        //END OF QTE INSTANTIATOR LOOP            
         }
     }
 
     private bool CanSpawnNewCombo()
     {
         bool result = false;
+        if (lastQTE == null)
+        {
+            result = true;
+            return result;
+        }
 
         if (combo == null || !combo.inProgress)
         {
             result = ((enviromentPos.x - lastEnviromentPos.x) > minHorizontalDis);
+            result = ((lastQTE.transform.position.x + DistanceUntilNextCombo) < QTESpawn.transform.position.x);
         }
 
         return result;
@@ -244,9 +227,9 @@ public class ComboGenerator : MonoBehaviour {
         }
     }
 
-    public void StartGenerator()
+    public void StartGenerator(bool activate)
     {
-
+        isStarted = activate;
     }
 
     public void UpdateGameVariables(Vector3 position, float time)
