@@ -109,44 +109,104 @@ public class ComboGenerator : MonoBehaviour {
                 break;            
         }
 
-       switch (type)
+        Vector3 pos;
+        if (!lastQTE)
         {
-            case ComboType.STRAIGHT:
-                Vector3 pos;
-                if (!lastQTE)
-                {
-                    pos = start;
-                    pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
-                } else
-                {
-                    pos = lastQTE.transform.position;
-                    pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
-                    pos.x += DistanceUntilNextCombo;
-                }
-                int typeCounter = 0;
-                for (int i = 0; i< rnd.Next(3, 8); i++)
-                {
-                    GameObject spawn = Instantiate(QTEPrefab);
-                    Vector3 spawnPosition = pos;
+            pos = start;
+            pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
+        }
+        else
+        {
+            pos = lastQTE.transform.position;
+            pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
+            pos.x += DistanceUntilNextCombo;
+        }
+        int typeCounter = 0;
+
+        //OPTIONAL VARIABLE FOR CURVED COMBO ONLY
+        float curveMultiplier = 1.2f;
+        //OPTIONAL VARIABLE FOR DIAGONAL COMBO ONLY
+        float upwardDistance = distance;
+
+        for (int i = 0; i < rnd.Next(3, 8); i++)
+        {
+            GameObject spawn = Instantiate(QTEPrefab);
+            Vector3 spawnPosition = pos;
+            //DO TYPE SPECIFIC POSITIONING HERE
+            switch (type)
+            {
+                case ComboType.STRAIGHT:
+                    
                     spawnPosition.x += distance * i;
                     spawn.transform.position = spawnPosition;
-                    QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
-                    if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
+                    break;
+                case ComboType.CURVED:
+                    if (spawnPosition.y >= 0 && i == 0)
                     {
-                        
-                        qteC.type = qteTypes[typeCounter];
-                        if (typeCounter + 1 > qteTypes.Count)
-                        {
-                            typeCounter = 0;
-                        } else
-                        {
-                            typeCounter++;
-                        }
-                    } else
-                    {
-                        qteC.type = qteTypes[rnd.Next(0, qteTypes.Count - 1)];
+                        curveMultiplier *= -1;
                     }
+                    spawnPosition.y += curveMultiplier * (i * i);
+                    spawnPosition.x += distance * i;
+                    spawn.transform.position = spawnPosition;
+                    break;
+                case ComboType.DIAGONAL:
+                    if (spawnPosition.y >= 0 && i == 0)
+                    {
+                        upwardDistance *= -1;
+                    }
+                    spawnPosition.x += distance * i;
+                    spawnPosition.y += upwardDistance * i;
+                    spawn.transform.position = spawnPosition;
+                    break;
+            }            
+
+            QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
+            lastQTE = qteC;
+            if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
+            {
+
+                qteC.type = qteTypes[typeCounter];
+                if (typeCounter + 1 > qteTypes.Count)
+                {
+                    typeCounter = 0;
                 }
+                else
+                {
+                    typeCounter++;
+                }
+            }
+            else
+            {
+                qteC.type = qteTypes[rnd.Next(0, qteTypes.Count - 1)];
+            }
+
+            SpriteRenderer[] sprites = spawn.GetComponentsInChildren<SpriteRenderer>();
+
+            foreach (SpriteRenderer sr in sprites)
+            {
+                switch (qteC.type)
+                {
+                    case QuickTimeEvent.Type.A:
+                        sr.sprite = a;
+                        break;
+                    case QuickTimeEvent.Type.B:
+                        sr.sprite = b;
+                        break;
+                    case QuickTimeEvent.Type.Y:
+                        sr.sprite = y;
+                        break;
+                    case QuickTimeEvent.Type.X:
+                        sr.sprite = x;
+                        break;
+                }
+            }
+        }
+
+
+        switch (type)
+        {
+            case ComboType.STRAIGHT:
+                
 
                 break;
             case ComboType.CURVED:
