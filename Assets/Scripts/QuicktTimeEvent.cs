@@ -23,10 +23,7 @@ namespace QuickTimeEvent
     }
 
     public class Utils
-    {
-
-        
-
+    {       
         public static string ConvertTypeToString(Type type)
         {
             string typeString = "";
@@ -51,6 +48,23 @@ namespace QuickTimeEvent
 
             return typeString;
         }
+
+        public static Type GetRandomType(System.Random rnd, List<Type> excludeList = null, bool first = true)
+        {
+            if (excludeList == null)
+                excludeList = new List<Type>();
+
+            if (first)
+                excludeList.Add(Type.None);
+            
+            Type selected = (Type)rnd.Next(0, Enum.GetNames(typeof(Type)).Length - 1);
+            if (excludeList.Contains(selected))
+            {
+                selected = GetRandomType(rnd, excludeList, false);
+            }
+
+            return selected;
+        }
     }
 
     public class ComboOld
@@ -74,6 +88,5 @@ namespace QuickTimeEvent
         {
             return 5;
         }
-    }
-
+    } 
 }
