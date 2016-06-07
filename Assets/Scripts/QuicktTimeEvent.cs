@@ -57,7 +57,7 @@ namespace QuickTimeEvent
             if (first)
                 excludeList.Add(Type.None);
             
-            Type selected = (Type)rnd.Next(0, Enum.GetNames(typeof(Type)).Length - 1);
+            Type selected = (Type)rnd.Next(0, Enum.GetNames(typeof(Type)).Length);
             if (excludeList.Contains(selected))
             {
                 selected = GetRandomType(rnd, excludeList, false);

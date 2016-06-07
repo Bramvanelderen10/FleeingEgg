@@ -35,6 +35,7 @@ public class ComboGenerator : MonoBehaviour {
     private float DistanceUntilNextCombo = 0f;
 
     private bool isStarted = false;
+    private bool firstTime = true;
 
     private VerticalBounds bounds;
 
@@ -59,21 +60,37 @@ public class ComboGenerator : MonoBehaviour {
     }
 
     void Update()
-    {
+    {       
         if (isStarted)
         {
+            if (lastQTE == null && !firstTime)
+            {
+                Vector3 pos = new Vector3(-99, 0, 0);
+                foreach (GameObject qte in GameObject.FindGameObjectsWithTag("QTE"))
+                {
+                    Vector3 qtePosition = qte.transform.position;
+                    if (qtePosition.x > pos.x)
+                    {
+                        pos.x = qtePosition.x;
+                        lastQTE = qte.GetComponent<QuickTimeEventController>();
+                    }
+                    
+                }
+            }
             time = Time.time - startTime;
             DetermineDifficulty();
 
             if (CanSpawnNewCombo())
             {
-                StartCombo((ComboType)rnd.Next(0, Enum.GetNames(typeof(ComboType)).Length - 1));
+                StartCombo((ComboType)rnd.Next(0, Enum.GetNames(typeof(ComboType)).Length));
             }
         }        
     }    
 
     private void StartCombo(ComboType type)
     {
+        comboInProgress = true;
+
         float distance = minHorizontalDis;
         List<QuickTimeEvent.Type> qteTypes = new List<QuickTimeEvent.Type>();
         Vector3 start = QTESpawn.transform.position;
@@ -82,20 +99,20 @@ public class ComboGenerator : MonoBehaviour {
         {
             case Difficulty.EASY:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
-                distance *= 3;
+                distance *= 1.2f;
                 DistanceUntilNextCombo = distance * 1.5f;
                 break;
             case Difficulty.NORMAL:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
-                distance *= 2.2f;
+                distance *= 1.1f;
                 DistanceUntilNextCombo = distance * 1.5f;
                 break;
             case Difficulty.HARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
-                distance *= 1.7f;
+                distance *= 1.05f;
                 DistanceUntilNextCombo = distance * 1.5f;
                 break;
             case Difficulty.INSANE:
@@ -123,15 +140,17 @@ public class ComboGenerator : MonoBehaviour {
         int typeCounter = 0;
 
         //OPTIONAL VARIABLE FOR CURVED COMBO ONLY
-        float curveMultiplier = 1.2f;
+        float curveMultiplier = 8f;
         //OPTIONAL VARIABLE FOR DIAGONAL COMBO ONLY
-        float upwardDistance = distance;
+        float upwardDistance = distance / 4f;
 
-        for (int i = 0; i < rnd.Next(3, 8); i++)
+        float amount = rnd.Next(3, 8);
+        for (int i = 0; i < amount; i++)
         {
             GameObject spawn = Instantiate(QTEPrefab);
             Vector3 spawnPosition = pos;
             //DO TYPE SPECIFIC POSITIONING HERE
+            //type = ComboType.STRAIGHT;
             switch (type)
             {
                 case ComboType.STRAIGHT:
@@ -142,8 +161,8 @@ public class ComboGenerator : MonoBehaviour {
                 case ComboType.CURVED:
                     if (spawnPosition.y >= 0 && i == 0)
                         curveMultiplier *= -1;
-                    spawnPosition.y += curveMultiplier * (i * i);
-                    spawnPosition.x += distance * i;
+                    spawnPosition.y += (i * i) / curveMultiplier;
+                    spawnPosition.x += (distance * i) / 2;
                     spawn.transform.position = spawnPosition;
                     break;
                 case ComboType.DIAGONAL:
@@ -160,7 +179,7 @@ public class ComboGenerator : MonoBehaviour {
             if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
             {
                 qteC.type = qteTypes[typeCounter];
-                if (typeCounter + 1 > qteTypes.Count)
+                if (typeCounter + 2 > qteTypes.Count)
                     typeCounter = 0;
                 else
                     typeCounter++;
@@ -190,24 +209,33 @@ public class ComboGenerator : MonoBehaviour {
                         break;
                 }
             }
+
             lastQTE = qteC;
         //END OF QTE INSTANTIATOR LOOP            
         }
+
+        comboInProgress = false;
     }
 
     private bool CanSpawnNewCombo()
     {
         bool result = false;
-        if (lastQTE == null)
+        if (firstTime)
         {
+            firstTime = false;
             result = true;
+            print("TRUE");
             return result;
         }
 
-        if (combo == null || !combo.inProgress)
+        if (!comboInProgress)
         {
-            result = ((enviromentPos.x - lastEnviromentPos.x) > minHorizontalDis);
+            //result = ((enviromentPos.x - lastEnviromentPos.x) > minHorizontalDis);
             result = ((lastQTE.transform.position.x + DistanceUntilNextCombo) < QTESpawn.transform.position.x);
+            if (result)
+            {
+                print("TRUE");
+            }
         }
 
         return result;
@@ -230,6 +258,7 @@ public class ComboGenerator : MonoBehaviour {
     public void StartGenerator(bool activate)
     {
         isStarted = activate;
+        firstTime = true;
     }
 
     public void UpdateGameVariables(Vector3 position, float time)
@@ -260,8 +289,8 @@ public class ComboGenerator : MonoBehaviour {
         float distance = distance_y / 2;
 
         VerticalBounds bounds = new VerticalBounds();
-        bounds.bottom = Camera.main.transform.position.y - distance;
-        bounds.top = Camera.main.transform.position.y + distance;
+        bounds.bottom = Camera.main.transform.position.y - distance + 1f;
+        bounds.top = Camera.main.transform.position.y + distance - 1f;
 
         return bounds;
     }
