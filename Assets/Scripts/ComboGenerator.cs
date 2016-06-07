@@ -73,8 +73,7 @@ public class ComboGenerator : MonoBehaviour {
                     {
                         pos.x = qtePosition.x;
                         lastQTE = qte.GetComponent<QuickTimeEventController>();
-                    }
-                    
+                    }                    
                 }
             }
             time = Time.time - startTime;
@@ -134,15 +133,17 @@ public class ComboGenerator : MonoBehaviour {
         else
         {
             pos = lastQTE.transform.position;
-            pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
+            //pos.y = rnd.Next((int)bounds.bottom, (int)bounds.top);
             pos.x += DistanceUntilNextCombo;
         }
         int typeCounter = 0;
 
         //OPTIONAL VARIABLE FOR CURVED COMBO ONLY
-        float curveMultiplier = 8f;
+        float curveMultiplier = UnityEngine.Random.Range(8f, 10f);
         //OPTIONAL VARIABLE FOR DIAGONAL COMBO ONLY
         float upwardDistance = distance / 4f;
+        upwardDistance = UnityEngine.Random.Range(upwardDistance, upwardDistance + 2f);
+        float dDistance = distance - 0.5f;
 
         float amount = rnd.Next(3, 8);
         for (int i = 0; i < amount; i++)
@@ -168,11 +169,17 @@ public class ComboGenerator : MonoBehaviour {
                 case ComboType.DIAGONAL:
                     if (spawnPosition.y >= 0 && i == 0)
                         upwardDistance *= -1;
-                    spawnPosition.x += distance * i;
+                    spawnPosition.x += dDistance * i;
                     spawnPosition.y += upwardDistance * i;
                     spawn.transform.position = spawnPosition;
                     break;
             }            
+
+            if (spawn.transform.position.y > bounds.top || spawn.transform.position.y < bounds.bottom)
+            {
+                Destroy(spawn);
+                continue;
+            }
 
             QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
             
