@@ -29,7 +29,6 @@ public class ComboGenerator : MonoBehaviour {
     public float minHorizontalDis = 1.3f;
 
     private System.Random rnd;
-    private Combo combo;
     private QuickTimeEventController lastQTE;
     private bool comboInProgress = false;
     private float DistanceUntilNextCombo = 0f;
@@ -42,14 +41,13 @@ public class ComboGenerator : MonoBehaviour {
     private Vector3 enviromentPos;
     private Vector3 lastEnviromentPos;
 
-    private float startTime;
+    private float startTime = 0;
     private float time;
 
     private Difficulty difficulty = Difficulty.EASY;
 
     void Awake()
-    {
-        startTime = Time.time;
+    {        
         enviromentPos = lastEnviromentPos = new Vector3(0, 0, 0);
     }
 
@@ -93,7 +91,7 @@ public class ComboGenerator : MonoBehaviour {
         float distance = minHorizontalDis;
         List<QuickTimeEvent.Type> qteTypes = new List<QuickTimeEvent.Type>();
         Vector3 start = QTESpawn.transform.position;
-
+        float ComboLength = rnd.Next(3, 8);
         switch (difficulty)
         {
             case Difficulty.EASY:
@@ -105,14 +103,14 @@ public class ComboGenerator : MonoBehaviour {
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.1f;
-                DistanceUntilNextCombo = distance * 1.5f;
+                DistanceUntilNextCombo = distance * 1.4f;
                 break;
             case Difficulty.HARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.05f;
-                DistanceUntilNextCombo = distance * 1.5f;
+                DistanceUntilNextCombo = distance * 1.2f;
                 break;
             case Difficulty.INSANE:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
@@ -120,7 +118,7 @@ public class ComboGenerator : MonoBehaviour {
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1f;
-                DistanceUntilNextCombo = distance * 1.5f;
+                DistanceUntilNextCombo = distance * 1.1f;
                 break;            
         }
 
@@ -145,8 +143,8 @@ public class ComboGenerator : MonoBehaviour {
         upwardDistance = UnityEngine.Random.Range(upwardDistance, upwardDistance + 2f);
         float dDistance = distance - 0.5f;
 
-        float amount = rnd.Next(3, 8);
-        for (int i = 0; i < amount; i++)
+        
+        for (int i = 0; i < ComboLength; i++)
         {
             GameObject spawn = Instantiate(QTEPrefab);
             Vector3 spawnPosition = pos;
@@ -266,6 +264,8 @@ public class ComboGenerator : MonoBehaviour {
     {
         isStarted = activate;
         firstTime = true;
+        difficulty = Difficulty.EASY;
+        startTime = Time.time;
     }
 
     public void UpdateGameVariables(Vector3 position, float time)
