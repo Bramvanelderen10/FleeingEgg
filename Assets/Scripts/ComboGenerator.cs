@@ -4,7 +4,8 @@ using System;
 using Utils;
 using System.Collections.Generic;
 
-public class ComboGenerator : MonoBehaviour {
+public class ComboGenerator : GameComponent
+{
 
     enum ComboType
     {
@@ -33,24 +34,15 @@ public class ComboGenerator : MonoBehaviour {
     private bool comboInProgress = false;
     private float DistanceUntilNextCombo = 0f;
 
-    private bool isStarted = false;
     private bool firstTime = true;
 
     private VerticalBounds bounds;
-
-    private Vector3 enviromentPos;
-    private Vector3 lastEnviromentPos;
 
     private float startTime = 0;
     private float time;
 
     private Difficulty difficulty = Difficulty.EASY;
-
-    void Awake()
-    {        
-        enviromentPos = lastEnviromentPos = new Vector3(0, 0, 0);
-    }
-
+    
 	// Use this for initialization
 	void Start () {
         rnd = new System.Random();
@@ -59,8 +51,9 @@ public class ComboGenerator : MonoBehaviour {
 
     void Update()
     {       
-        if (isStarted)
+        if (isActive)
         {
+            //Check if lastQTE is null because of a bug and then find the last spawned QTE --- THIS IS A QUICKFIX
             if (lastQTE == null && !firstTime)
             {
                 Vector3 pos = new Vector3(-99, 0, 0);
@@ -74,9 +67,12 @@ public class ComboGenerator : MonoBehaviour {
                     }                    
                 }
             }
+
+            //Determine game duration and base difficulty on that
             time = Time.time - startTime;
             DetermineDifficulty();
 
+            //Spawn new combo with random combo type
             if (CanSpawnNewCombo())
             {
                 StartCombo((ComboType)rnd.Next(0, Enum.GetNames(typeof(ComboType)).Length));
@@ -86,6 +82,7 @@ public class ComboGenerator : MonoBehaviour {
 
     private void StartCombo(ComboType type)
     {
+        //Set comboinprogress so multiple combo's can't be spawned at once
         comboInProgress = true;
 
         float distance = minHorizontalDis;
@@ -262,26 +259,10 @@ public class ComboGenerator : MonoBehaviour {
 
     public void StartGenerator(bool activate)
     {
-        isStarted = activate;
+        isActive = activate;
         firstTime = true;
         difficulty = Difficulty.EASY;
         startTime = Time.time;
-    }
-
-    public void UpdateGameVariables(Vector3 position, float time)
-    {
-        enviromentPos = position;
-        this.time = time;
-    }
-
-    public void ApplyAdjustmentValue(float value)
-    {
-        lastEnviromentPos.x -= value;
-    }
-
-    private void SaveEnviromentPosition()
-    {
-        lastEnviromentPos = enviromentPos;
     }
 
     public VerticalBounds GetBounds()

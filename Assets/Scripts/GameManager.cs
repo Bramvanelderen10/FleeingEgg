@@ -7,26 +7,15 @@ public class GameManager : GameComponent {
     public GameObject movingEnviroment;
     public ComboGenerator cg;
 
-    public GameObject startText;
-
-    public Transform qte_spawn;
-    public Transform qte_despawn;
+    public GameObject startText;    
+    public GameObject player_prefab;
     public Transform player_spawn;
 
-    public GameObject player_prefab;
-    public GameObject qte_a_prefab;
-    public GameObject qte_b_prefab;
-    public GameObject qte_y_prefab;
-    public GameObject qte_x_prefab;
-
-    public float qte_distance = 3.0f;
     public float game_speed = 2f;
     public float player_speed_multiplier = 2f;
 
     private MovingEnviromentController mec;
-
     private System.Random rnd;
-
     private GameObject player = null;
 
 	// Use this for initialization
