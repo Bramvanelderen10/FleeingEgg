@@ -13,6 +13,7 @@ public class GameManager : GameComponent {
     public GameObject player_prefab;
     public Transform player_spawn;
 
+    public UnityAds unityAds;
     public DatabaseManager dbm;
     public GameObject EndGameCanvas;
     private GameObject canvas = null;
@@ -41,6 +42,7 @@ public class GameManager : GameComponent {
         {
             if (Input.GetButtonDown("Start"))
             {
+                unityAds.ShowAd();
                 ActivateGameComponents();
             } else
             {
@@ -166,6 +168,7 @@ public class GameManager : GameComponent {
     void ShowEndGame()
     {
         float time = Time.time - startTime;
+        unityAds.AddTime(time);
         score = (int)System.Math.Round(time / 5, 0);
 
         canvas = Instantiate(EndGameCanvas);
