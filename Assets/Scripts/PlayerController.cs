@@ -4,7 +4,7 @@ using QuickTimeEvent;
 
 public class PlayerController : GameComponent {
 
-    private bool m_dead = false;
+    public bool dead = false;
     private Rigidbody2D rb2d;
     //private Rigidbody2D rb2dParent;
     //private MovingEnviromentController mec;
@@ -91,7 +91,7 @@ public class PlayerController : GameComponent {
     {
         if (coll.gameObject.tag == "Enemy")
         {
-            m_dead = true; //Gamemanager can detect based on the dead value if the player is still alive if not the gamemanager triggers the destroy
+            dead = true; //Gamemanager can detect based on the dead value if the player is still alive if not the gamemanager triggers the destroy
             this.gameObject.SetActive(false); //Play death animation which then triggers destroy after animation is finished
         }            
     }

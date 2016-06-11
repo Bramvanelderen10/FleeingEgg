@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using QuickTimeEvent;
+using System;
+using UnityEngine.UI;
 
 public class GameManager : GameComponent {
 
@@ -11,12 +13,22 @@ public class GameManager : GameComponent {
     public GameObject player_prefab;
     public Transform player_spawn;
 
+    public DatabaseManager dbm;
+    public GameObject EndGameCanvas;
+    private GameObject canvas = null;
+    private String name = null;
+    private int score;
+
     public float game_speed = 2f;
     public float player_speed_multiplier = 2f;
 
     private MovingEnviromentController mec;
     private System.Random rnd;
     private GameObject player = null;
+
+    private float time;
+    private float startTime;
+    private Difficulty difficulty;
 
 	// Use this for initialization
 	void Start () {
@@ -35,13 +47,7 @@ public class GameManager : GameComponent {
                 return;
             }
         }
-        if (!player.activeSelf)
-        {
-            ResetGamePosition(movingEnviroment.transform.position);
-            player.SetActive(true);
-            InitializeGame();
-            ActivateGameComponents(false);
-        }
+        CheckPlayerStatus();
 	}
 
     void FixedUpdate()
@@ -100,11 +106,94 @@ public class GameManager : GameComponent {
 
     void ActivateGameComponents(bool active = true)
     {
+        if (active)
+        {
+            startTime = time = Time.time;
+            if (canvas)
+            {
+                Destroy(canvas);
+            }
+        }
+            
+        UpdateDifficulty(true);
+
         player.GetComponent<GameComponent>().isActive = active;
         mec.isActive = active;
         isActive = active;
         startText.SetActive(!active);
 
         cg.StartGenerator(active);
+
+        
+    }
+
+    void UpdateDifficulty(bool init = false)
+    {
+        if (init)
+        {
+            difficulty = Difficulty.EASY;
+        } else
+        {
+            if (time > 30)
+            {
+                time = Time.time;
+                difficulty++;
+
+                if ((int)difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
+                {
+                    difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
+                }
+            }
+        }
+        
+    }
+
+    void CheckPlayerStatus()
+    {
+        PlayerController pc = player.GetComponent<PlayerController>();
+
+        if (pc.dead)
+        {            
+            ResetGamePosition(movingEnviroment.transform.position);
+            pc.dead = false;
+            player.SetActive(true);
+            InitializeGame();
+            ActivateGameComponents(false);
+            ShowEndGame();
+        }
+    }
+
+    void ShowEndGame()
+    {
+        float time = Time.time - startTime;
+        score = (int)System.Math.Round(time / 5, 0);
+
+        canvas = Instantiate(EndGameCanvas);
+
+        if (name != null)
+        {
+            GameObject nameInput = canvas.transform.FindChild("Name").gameObject;
+            InputField input = nameInput.GetComponent<InputField>();
+            input.text = name;
+        }
+
+        GameObject scoreText = canvas.transform.FindChild("Score").gameObject;
+        scoreText.GetComponent<Text>().text = score.ToString();
+        GameObject saveButton = canvas.transform.FindChild("Save").gameObject;
+        Button save = saveButton.GetComponent<Button>();
+        save.onClick.AddListener(delegate() { Save(); });
+    }
+
+    public void Save()
+    {
+        if (canvas)
+        {
+            GameObject nameInput = canvas.transform.FindChild("Name").gameObject;
+            InputField input = nameInput.GetComponent<InputField>();
+            name = input.text;
+
+            dbm.InsertScore(name, score);
+            Destroy(canvas);
+        }        
     }
 }

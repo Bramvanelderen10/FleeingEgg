@@ -15,11 +15,11 @@ namespace QuickTimeEvent
     }
 
     public enum Difficulty
-    {        
-        Easy,
-        Normal,
-        Hard,
-        VeryHard,
+    {
+        EASY,
+        NORMAL,
+        HARD,
+        INSANE
     }
 
     public class Utils

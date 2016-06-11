@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using Utils;
 using System.Collections.Generic;
+using QuickTimeEvent;
 
 public class ComboGenerator : GameComponent
 {
@@ -12,14 +13,6 @@ public class ComboGenerator : GameComponent
         DIAGONAL,
         CURVED,
         STRAIGHT,
-    }
-
-    enum Difficulty
-    {
-        EASY,
-        NORMAL,
-        HARD,
-        INSANE
     }
 
     public GameObject QTEPrefab;

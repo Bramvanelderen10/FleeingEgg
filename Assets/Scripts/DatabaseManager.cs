@@ -12,7 +12,6 @@ public class DatabaseManager : MonoBehaviour
     private IDbConnection _connection;
     private IDbCommand _command;
     private IDataReader _dbr;
-    private bool isConnected = false;
     private string sql;
 
     // Use this for initialization
