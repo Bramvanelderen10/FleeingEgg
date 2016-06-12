@@ -119,7 +119,7 @@ public class GameManager : GameComponent {
             
         UpdateDifficulty(true);
 
-        player.GetComponent<GameComponent>().isActive = active;
+        player.GetComponent<PlayerController>().Activate(active);
         mec.isActive = active;
         isActive = active;
         startText.SetActive(!active);

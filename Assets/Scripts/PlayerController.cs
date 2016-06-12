@@ -18,6 +18,15 @@ public class PlayerController : GameComponent {
     private Type currentTargetType = Type.None;
     private Type nextTargetType = Type.None;
 
+    public void Activate(bool activate = true)
+    {
+        isActive = activate;
+        isMoving = true;
+        target = null;
+        currentTargetType = Type.None;
+        nextTargetType = Type.None;
+    }
+
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
