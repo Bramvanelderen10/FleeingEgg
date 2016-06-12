@@ -19,6 +19,7 @@ public class ComboGenerator : GameComponent
     public GameObject QTESpawn;
 
     public Sprite a, b, x, y;
+    public Sprite mobile_a, mobile_b, mobile_x, mobile_y;
 
     public float minHorizontalDis = 1.3f;
 
@@ -192,15 +193,27 @@ public class ComboGenerator : GameComponent
                 {
                     case QuickTimeEvent.Type.A:
                         sr.sprite = a;
+#if UNITY_ANDROID
+                        sr.sprite = mobile_a;
+#endif
                         break;
                     case QuickTimeEvent.Type.B:
                         sr.sprite = b;
+#if UNITY_ANDROID
+                        sr.sprite = mobile_b;
+#endif
                         break;
                     case QuickTimeEvent.Type.Y:
                         sr.sprite = y;
+#if UNITY_ANDROID
+                        sr.sprite = mobile_y;
+#endif
                         break;
                     case QuickTimeEvent.Type.X:
                         sr.sprite = x;
+#if UNITY_ANDROID
+                        sr.sprite = mobile_x;
+#endif
                         break;
                 }
             }

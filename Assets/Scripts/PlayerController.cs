@@ -145,4 +145,27 @@ public class PlayerController : GameComponent {
     {
         this.m_speed = m_current_speed = speed;
     }
+
+    //This method is a simulation of what would happen with a normal keypress but instead using unity buttons
+    public void OnClick(Type type)
+    {        
+        if (!isActive)
+            return;
+
+        if (isMoving)
+        {
+            if (type == currentTargetType)
+            {
+                m_current_speed = m_current_speed / 3;
+            }
+        }
+        else if (target != null)
+        {
+            if (currentTargetType != Type.None && type == currentTargetType)
+            {
+                isMoving = true;
+                target.GetComponent<QuickTimeEventController>().TriggerPopUp();
+            }
+        }
+    }
 }
