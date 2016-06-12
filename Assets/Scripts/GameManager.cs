@@ -42,8 +42,7 @@ public class GameManager : GameComponent {
         {
             if (Input.GetButtonDown("Start"))
             {
-                unityAds.ShowAd();
-                ActivateGameComponents();
+                StartGame();
             } else
             {
                 return;
@@ -85,6 +84,7 @@ public class GameManager : GameComponent {
         rnd = new System.Random();
 
         startText.SetActive(true);
+        startText.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
     }
 
     void ResetGamePosition(Vector3 position)
@@ -198,5 +198,11 @@ public class GameManager : GameComponent {
             dbm.InsertScore(name, score);
             Destroy(canvas);
         }        
+    }
+
+    public void StartGame()
+    {
+        unityAds.ShowAd();
+        ActivateGameComponents();
     }
 }
