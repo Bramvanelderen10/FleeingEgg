@@ -10,4 +10,10 @@ namespace Utils
         public float top;
         public float bottom;
     }
+
+    public struct HorizontalBounds
+    {
+        public float left;
+        public float right;
+    }
 }
