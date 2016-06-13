@@ -13,6 +13,8 @@ public class GameManager : GameComponent {
     public GameObject player_prefab;
     public Transform player_spawn;
 
+    public int maxMisses;
+
     public UnityAds unityAds;
     public DatabaseManager dbm;
     public GameObject EndGameCanvas;
@@ -156,6 +158,16 @@ public class GameManager : GameComponent {
 
         if (pc.dead)
         {            
+            ResetGamePosition(movingEnviroment.transform.position);
+            pc.dead = false;
+            player.SetActive(true);
+            InitializeGame();
+            ActivateGameComponents(false);
+            ShowEndGame();
+        }
+
+        if (pc.GetMisses() > maxMisses)
+        {
             ResetGamePosition(movingEnviroment.transform.position);
             pc.dead = false;
             player.SetActive(true);

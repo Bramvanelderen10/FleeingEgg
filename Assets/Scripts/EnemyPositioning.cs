@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Utils;
+using FlyingEggUtils;
 using System;
 
 public class EnemyPositioning : MonoBehaviour {
@@ -11,12 +11,7 @@ public class EnemyPositioning : MonoBehaviour {
         Vector3 pos = transform.position;
         pos.x = bounds.left;
         transform.position = pos;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
 
     public HorizontalBounds GetBounds()
     {

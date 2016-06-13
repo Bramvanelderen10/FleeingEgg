@@ -18,6 +18,11 @@ public class PlayerController : GameComponent {
     private Type currentTargetType = Type.None;
     private Type nextTargetType = Type.None;
 
+    private int hits = 0;
+    private int misses = 0;
+
+    private bool hasMissed = false;
+
     public void Activate(bool activate = true)
     {
         isActive = activate;
@@ -25,6 +30,12 @@ public class PlayerController : GameComponent {
         target = null;
         currentTargetType = Type.None;
         nextTargetType = Type.None;
+        hasMissed = false;
+
+        if (activate)
+        {
+            hits = misses = 0;
+        }
     }
 
     // Use this for initialization
@@ -48,9 +59,11 @@ public class PlayerController : GameComponent {
         //if ismoving move towards the target
         if (isMoving)
         {
-            if (Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
+            if (!hasMissed && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
-                m_current_speed = m_current_speed / 3;
+                //m_current_speed = m_current_speed / 3;
+                misses++;
+                hasMissed = true;
             }
 
             transform.position = Vector3.MoveTowards(transform.position, target.position, m_current_speed * Time.deltaTime);
@@ -78,6 +91,8 @@ public class PlayerController : GameComponent {
         {
             if (currentTargetType != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
+                hits++;
+                hasMissed = false;
                 isMoving = true;
                 target.GetComponent<QuickTimeEventController>().TriggerPopUp();
             }
@@ -163,18 +178,34 @@ public class PlayerController : GameComponent {
 
         if (isMoving)
         {
-            if (type == currentTargetType)
+            if (!hasMissed && type == currentTargetType)
             {
-                m_current_speed = m_current_speed / 3;
+                hasMissed = true;
+                misses++;
+                //m_current_speed = m_current_speed / 3;
             }
         }
         else if (target != null)
         {
             if (currentTargetType != Type.None && type == currentTargetType)
             {
+                hasMissed = false;
+                hits++;
                 isMoving = true;
                 target.GetComponent<QuickTimeEventController>().TriggerPopUp();
             }
         }
+    }
+
+    public int GetMisses()
+    {
+
+        return misses;
+    }
+
+    public int GetHits()
+    {
+
+        return hits;
     }
 }

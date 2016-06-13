@@ -14,10 +14,12 @@ public class UnityAds : MonoBehaviour {
 
     public void ShowAd()
     {
+#if UNITY_ANDROID
         if (inGameTime > adFrequency && Advertisement.IsReady())
         {
             Advertisement.Show();
             inGameTime = 0;
         }
+#endif
     }
 }
