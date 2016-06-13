@@ -8,7 +8,8 @@ using System;
 public class DatabaseManager : MonoBehaviour
 {
 
-    private string _constr = "URI=file:FleeingLeaderboards.db";
+    private string _constr = "URI=file:FlyingLeaderboards.db";
+    private string _constr_android = "URI=file:" + Application.persistentDataPath + "/" + "FlyingLeaderboards.db";
     private IDbConnection _connection;
     private IDbCommand _command;
     private IDataReader _dbr;
@@ -26,7 +27,11 @@ public class DatabaseManager : MonoBehaviour
 
     public void OpenConnection()
     {
+#if UNITY_ANDROID
+        _connection = new SqliteConnection(_constr_android);
+#else
         _connection = new SqliteConnection(_constr);
+#endif
         _connection.Open();
         _command = _connection.CreateCommand();
     }
