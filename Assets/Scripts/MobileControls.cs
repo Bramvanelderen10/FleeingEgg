@@ -10,4 +10,12 @@ public class MobileControls : MonoBehaviour {
         transform.gameObject.SetActive(true);
 #endif
     }
+
+    public void SetActive(bool active)
+    {
+        transform.gameObject.SetActive(false);
+#if UNITY_ANDROID
+        transform.gameObject.SetActive(active);
+#endif
+    }
 }

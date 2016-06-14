@@ -13,6 +13,8 @@ public class GameManager : GameComponent {
     public GameObject player_prefab;
     public Transform player_spawn;
 
+    public GameObject mobile_canvas, ingame_canvas;
+    public Text hits, misses, scoreText;
     public int maxMisses;
 
     public UnityAds unityAds;
@@ -28,6 +30,7 @@ public class GameManager : GameComponent {
     private MovingEnviromentController mec;
     private System.Random rnd;
     private GameObject player = null;
+    private PlayerController pc;
 
     private float time;
     private float startTime;
@@ -49,6 +52,11 @@ public class GameManager : GameComponent {
             {
                 return;
             }
+        } else
+        {
+            hits.text = pc.GetHits().ToString();
+            misses.text = pc.GetMisses().ToString();
+            scoreText.text = GetScore().ToString();
         }
         CheckPlayerStatus();
 	}
@@ -82,11 +90,15 @@ public class GameManager : GameComponent {
         position.y += 0.5f;
         player.transform.position = position;
         player.GetComponent<PlayerController>().SetSpeed(game_speed * player_speed_multiplier);
+        pc = player.GetComponent<PlayerController>();
 
         rnd = new System.Random();
 
         startText.SetActive(true);
         startText.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
+
+        ingame_canvas.SetActive(false);
+        mobile_canvas.GetComponent<MobileControls>().SetActive(false);
     }
 
     void ResetGamePosition(Vector3 position)
@@ -118,7 +130,10 @@ public class GameManager : GameComponent {
                 Destroy(canvas);
             }
         }
-            
+
+        ingame_canvas.SetActive(active);
+        mobile_canvas.GetComponent<MobileControls>().SetActive(active);
+
         UpdateDifficulty(true);
 
         player.GetComponent<PlayerController>().Activate(active);
@@ -154,8 +169,6 @@ public class GameManager : GameComponent {
 
     void CheckPlayerStatus()
     {
-        PlayerController pc = player.GetComponent<PlayerController>();
-
         if (pc.dead)
         {            
             ResetGamePosition(movingEnviroment.transform.position);
@@ -166,7 +179,7 @@ public class GameManager : GameComponent {
             ShowEndGame();
         }
 
-        if (pc.GetMisses() > maxMisses)
+        if (pc.GetMisses() >= maxMisses)
         {
             ResetGamePosition(movingEnviroment.transform.position);
             pc.dead = false;
@@ -181,7 +194,7 @@ public class GameManager : GameComponent {
     {
         float time = Time.time - startTime;
         unityAds.AddTime(time);
-        score = (int)System.Math.Round(time / 5, 0);
+        score = GetScore();
 
         canvas = Instantiate(EndGameCanvas);
 
@@ -216,5 +229,19 @@ public class GameManager : GameComponent {
     {
         unityAds.ShowAd();
         ActivateGameComponents();
+    }
+
+    public int GetScore()
+    {
+        int hits = pc.GetHits();
+        int misses = pc.GetMisses();
+        int time = Convert.ToInt32(Time.time - startTime);
+        
+        float positive = (hits / 10) + (time / 4);
+        float negative = misses;
+
+        int score = Convert.ToInt32(positive - negative);
+
+        return score;
     }
 }
