@@ -41,6 +41,8 @@ public class GameManager : GameComponent {
 
 	// Use this for initialization
 	void Start () {
+        startButton.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
+        leaderboardsButton.GetComponent<Button>().onClick.AddListener(delegate { ShowLeaderboards(); });
         InitializeGame();
     }
 	
@@ -98,10 +100,9 @@ public class GameManager : GameComponent {
         rnd = new System.Random();
 
         startButton.SetActive(true);
-        startButton.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
+        
 
         leaderboardsButton.SetActive(true);
-        leaderboardsButton.GetComponent<Button>().onClick.AddListener(delegate { ShowLeaderboards(); });
 
         ingame_canvas.SetActive(false);
         mobile_canvas.GetComponent<MobileControls>().SetActive(false);
@@ -243,7 +244,10 @@ public class GameManager : GameComponent {
         leaderboard_canvas.SetActive(true);
         leaderboard_canvas.transform.FindChild("Back").GetComponent<Button>().onClick.AddListener(delegate { HideLeaderboards(); });
         menu_canvas.SetActive(false);
-
+        if (canvas)
+        {
+            canvas.SetActive(false);
+        }
         Vector3 startPos = new Vector3(0, -35, 0);
         List<KeyValuePair<string, int>> topScores = dbm.RetrieveTopScores(10);
 
@@ -272,6 +276,10 @@ public class GameManager : GameComponent {
 
     public void HideLeaderboards()
     {
+        if (canvas)
+        {
+            canvas.SetActive(true);
+        }
         menu_canvas.SetActive(true);
         leaderboard_canvas.SetActive(false);
         foreach (GameObject rank in rankings)
