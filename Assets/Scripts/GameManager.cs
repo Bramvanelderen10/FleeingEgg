@@ -5,6 +5,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+//TODO Split UI, leaderboards an score system into different components
 public class GameManager : GameComponent {
 
     public GameObject movingEnviroment;
