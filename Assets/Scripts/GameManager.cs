@@ -3,17 +3,18 @@ using System.Collections;
 using QuickTimeEvent;
 using System;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : GameComponent {
 
     public GameObject movingEnviroment;
     public ComboGenerator cg;
 
-    public GameObject startText;    
+    public GameObject startButton, leaderboardsButton, leaderboardsText;    
     public GameObject player_prefab;
     public Transform player_spawn;
 
-    public GameObject mobile_canvas, ingame_canvas;
+    public GameObject mobile_canvas, ingame_canvas, leaderboard_canvas, menu_canvas;
     public Text hits, misses, scoreText;
     public int maxMisses;
 
@@ -35,6 +36,8 @@ public class GameManager : GameComponent {
     private float time;
     private float startTime;
     private Difficulty difficulty;
+
+    private List<GameObject> rankings;
 
 	// Use this for initialization
 	void Start () {
@@ -94,11 +97,16 @@ public class GameManager : GameComponent {
 
         rnd = new System.Random();
 
-        startText.SetActive(true);
-        startText.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
+        startButton.SetActive(true);
+        startButton.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });
+
+        leaderboardsButton.SetActive(true);
+        leaderboardsButton.GetComponent<Button>().onClick.AddListener(delegate { ShowLeaderboards(); });
 
         ingame_canvas.SetActive(false);
         mobile_canvas.GetComponent<MobileControls>().SetActive(false);
+
+        leaderboard_canvas.SetActive(false);
     }
 
     void ResetGamePosition(Vector3 position)
@@ -139,11 +147,10 @@ public class GameManager : GameComponent {
         player.GetComponent<PlayerController>().Activate(active);
         mec.isActive = active;
         isActive = active;
-        startText.SetActive(!active);
+        startButton.SetActive(!active);
+        leaderboardsButton.SetActive(!active);
 
-        cg.StartGenerator(active);
-
-        
+        cg.StartGenerator(active);        
     }
 
     void UpdateDifficulty(bool init = false)
@@ -229,6 +236,48 @@ public class GameManager : GameComponent {
     {
         unityAds.ShowAd();
         ActivateGameComponents();
+    }
+
+    public void ShowLeaderboards()
+    {
+        leaderboard_canvas.SetActive(true);
+        leaderboard_canvas.transform.FindChild("Back").GetComponent<Button>().onClick.AddListener(delegate { HideLeaderboards(); });
+        menu_canvas.SetActive(false);
+
+        Vector3 startPos = new Vector3(0, -35, 0);
+        List<KeyValuePair<string, int>> topScores = dbm.RetrieveTopScores(10);
+
+        rankings = new List<GameObject>();
+
+        int i = 0;
+        foreach( KeyValuePair<string, int> topScore in topScores)
+        {
+            int adjustment = 0 + (i * 30);
+            Vector3 pos = new Vector3();
+            pos.y = startPos.y - adjustment;
+
+            GameObject leaderboardsObject = Instantiate(leaderboardsText);
+            rankings.Add(leaderboardsObject);
+
+            Text text = leaderboardsObject.GetComponent<Text>();
+            text.transform.parent = leaderboard_canvas.transform;
+
+            text.rectTransform.anchoredPosition = pos;
+            text.text = (i + 1).ToString() + " " + topScore.Key + " " + topScore.Value.ToString();
+            
+
+            i++;
+        }
+    }
+
+    public void HideLeaderboards()
+    {
+        menu_canvas.SetActive(true);
+        leaderboard_canvas.SetActive(false);
+        foreach (GameObject rank in rankings)
+        {
+            Destroy(rank);
+        }
     }
 
     public int GetScore()

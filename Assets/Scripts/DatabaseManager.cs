@@ -57,21 +57,28 @@ public class DatabaseManager : MonoBehaviour
         return true;
     }
 
-    public Dictionary<string, int> RetrieveTopScores(int count)
+    public List<KeyValuePair<string, int>> RetrieveTopScores(int count)
     {
         OpenConnection();
 
-        Dictionary<string, int> dc = new Dictionary<string, int>();
+        List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+
+        //Dictionary<string, int> dc = new Dictionary<string, int>();
         sql = "select * from highscores order by score desc limit 10";
         _command.CommandText = sql;
         IDataReader _reader = _command.ExecuteReader();
         while (_reader.Read())
-            dc.Add(_reader["name"].ToString(), Int32.Parse(_reader["score"].ToString()));
+        {
+            //dc.Add(_reader["name"].ToString(), Int32.Parse(_reader["score"].ToString()));
+
+            list.Add(new KeyValuePair<string, int>(_reader["name"].ToString(), Int32.Parse(_reader["score"].ToString())));
+        }
+            
         _reader.Close();
         _reader = null;
 
         CloseConnection();
 
-        return dc;
+        return list;
     }
 }
