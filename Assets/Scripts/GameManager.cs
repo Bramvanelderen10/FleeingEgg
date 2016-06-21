@@ -19,6 +19,8 @@ public class GameManager : GameComponent {
     public Text hits, misses, scoreText;
     public int maxMisses;
 
+    public AudioManager am;
+
     public UnityAds unityAds;
     public DatabaseManager dbm;
     public GameObject EndGameCanvas;
@@ -97,6 +99,7 @@ public class GameManager : GameComponent {
         player.transform.position = position;
         player.GetComponent<PlayerController>().SetSpeed(game_speed * player_speed_multiplier);
         pc = player.GetComponent<PlayerController>();
+        pc.am = am;
 
         rnd = new System.Random();
 
@@ -109,6 +112,8 @@ public class GameManager : GameComponent {
         mobile_canvas.GetComponent<MobileControls>().SetActive(false);
 
         leaderboard_canvas.SetActive(false);
+
+        am.PlayMenuSoundtrack();
     }
 
     void ResetGamePosition(Vector3 position)
@@ -139,6 +144,11 @@ public class GameManager : GameComponent {
             {
                 Destroy(canvas);
             }
+
+            am.PlayGameSoundtrack();
+        } else
+        {
+            am.PlayMenuSoundtrack();
         }
 
         ingame_canvas.SetActive(active);
