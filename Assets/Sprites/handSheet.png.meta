@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 8366be72deb6b17429cf104a6dd892ce
+timeCreated: 1466779656
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: handSheet_0
+    21300002: handSheet_1
+    21300004: handSheet_2
+    21300006: handSheet_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: handSheet_0
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 1506
+        width: 568
+        height: 457
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 113.4025, y: -105.65503}
+        - {x: 133.4025, y: -89.65503}
+        - {x: 163.4025, y: -58.65503}
+        - {x: 174.4025, y: -42.65503}
+        - {x: 187.4025, y: -17.65503}
+        - {x: 195.4025, y: 9.344971}
+        - {x: 195.4025, y: 66.34497}
+        - {x: 188.4025, y: 87.34497}
+        - {x: 175.4025, y: 108.34497}
+        - {x: 161.4025, y: 122.34497}
+        - {x: 142.4025, y: 137.34497}
+        - {x: 114.4025, y: 150.34497}
+        - {x: 86.4025, y: 157.34497}
+        - {x: 9.402496, y: 157.34497}
+        - {x: 1.4024963, y: 156.34497}
+        - {x: -43.597504, y: 144.34497}
+        - {x: -56.597504, y: 139.34497}
+        - {x: -96.5975, y: 118.34497}
+        - {x: -126.5975, y: 95.34497}
+        - {x: -149.5975, y: 73.34497}
+        - {x: -165.5975, y: 53.34497}
+        - {x: -183.5975, y: 23.34497}
+        - {x: -191.5975, y: -4.6550293}
+        - {x: -192.5975, y: -16.65503}
+        - {x: -192.5975, y: -60.65503}
+        - {x: -188.5975, y: -74.65503}
+        - {x: -181.5975, y: -88.65503}
+        - {x: -174.5975, y: -101.65503}
+        - {x: -144.5975, y: -130.65503}
+        - {x: -122.5975, y: -142.65503}
+        - {x: -106.5975, y: -148.65503}
+        - {x: -73.5975, y: -155.65503}
+        - {x: -18.597504, y: -155.65503}
+        - {x: 1.4024963, y: -153.65503}
+        - {x: 49.402496, y: -141.65503}
+        - {x: 98.4025, y: -115.65503}
+    - name: handSheet_1
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1638
+        width: 375
+        height: 193
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16.6875, y: 67.43506}
+        - {x: -8.3125, y: 65.43506}
+        - {x: -75.3125, y: 44.43506}
+        - {x: -128.3125, y: -14.564941}
+        - {x: -128.3125, y: -62.56494}
+        - {x: -120.3125, y: -64.56494}
+        - {x: -9.3125, y: -64.56494}
+        - {x: 37.6875, y: -50.56494}
+        - {x: 128.6875, y: 21.435059}
+        - {x: 128.6875, y: 67.43506}
+    - name: handSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1522
+        y: 1702
+        width: 293
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -98.734985, y: 39.61499}
+        - {x: -98.734985, y: -21.38501}
+        - {x: -50.734985, y: -38.38501}
+        - {x: 101.265015, y: -38.38501}
+        - {x: 101.265015, y: 19.61499}
+        - {x: 92.265015, y: 39.61499}
+    - name: handSheet_3
+      rect:
+        serializedVersion: 2
+        x: 2143
+        y: 1644
+        width: 182
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -60.902466, y: 78.03003}
+        - {x: -60.902466, y: -9.969971}
+        - {x: -34.902466, y: -77.96997}
+        - {x: 63.097534, y: -77.96997}
+        - {x: 63.097534, y: 29.03003}
+        - {x: 12.097534, y: 78.03003}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

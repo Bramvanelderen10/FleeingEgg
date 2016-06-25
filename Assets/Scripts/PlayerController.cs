@@ -10,8 +10,8 @@ public class PlayerController : GameComponent {
     //private Rigidbody2D rb2dParent;
     //private MovingEnviromentController mec;
 
-    private float m_speed = 2f;
-    private float m_current_speed = 2f;
+    public float m_speed = 2f;
+    public float m_current_speed = 2f;
 
     private bool isMoving = true;    
 
@@ -116,8 +116,7 @@ public class PlayerController : GameComponent {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Enemy")
-        {
+        if (coll.gameObject.tag == "Enemy") {
             dead = true; //Gamemanager can detect based on the dead value if the player is still alive if not the gamemanager triggers the destroy
             this.gameObject.SetActive(false); //Play death animation which then triggers destroy after animation is finished
         }            
