@@ -21,7 +21,7 @@ public class HandAI : MonoBehaviour {
         if (!anim)
             anim = GetComponent<Animator>();
         if (player && anim && !hold && player.GetComponent<PlayerController>().isActive) {
-            if (Vector2.Distance(transform.position, player.transform.position) < 5f) //TODO CHECK X AND Y AXIS SEPERATLY FOR ACCURATE RESULT
+            if (Vector2.Distance(transform.position, player.transform.position) < 3.5f) //TODO CHECK X AND Y AXIS SEPERATLY FOR ACCURATE RESULT
             {
                 anim.SetTrigger("grab");
             }

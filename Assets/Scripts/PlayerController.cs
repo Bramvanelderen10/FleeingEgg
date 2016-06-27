@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using QuickTimeEvent;
+using System.Collections.Generic;
 
 public class PlayerController : GameComponent {
 
@@ -90,6 +91,21 @@ public class PlayerController : GameComponent {
 
         } else if (target != null)
         {
+
+            //Prevent pressing all buttons at once
+            int pressCount = 0;
+            foreach (Type enumValue in System.Enum.GetValues(typeof(Type)))
+            {
+                if (enumValue != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(enumValue)))
+                {
+                    pressCount++;
+                }
+            }
+            if (pressCount > 1)
+            {
+                misses++;
+            }
+
             if (currentTargetType != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
                 if (am)
@@ -178,14 +194,15 @@ public class PlayerController : GameComponent {
         if (!isActive)
             return;
 
+        
         if (isMoving)
-        {
+        {           
             if (!hasMissed && type == currentTargetType)
             {
                 hasMissed = true;
                 misses++;
                 //m_current_speed = m_current_speed / 3;
-            }
+            }            
         }
         else if (target != null)
         {
@@ -211,5 +228,10 @@ public class PlayerController : GameComponent {
     {
 
         return hits;
+    }
+
+    public void AddMiss()
+    {
+        misses++;
     }
 }
