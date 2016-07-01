@@ -32,10 +32,7 @@ public class ComboGenerator : GameComponent
 
     private VerticalBounds bounds;
 
-    private float startTime = 0;
-    private float time;
-
-    private Difficulty difficulty = Difficulty.EASY;
+    private Difficulty difficulty = 0;
     
 	// Use this for initialization
 	void Start () {
@@ -62,10 +59,6 @@ public class ComboGenerator : GameComponent
                 }
             }
 
-            //Determine game duration and base difficulty on that
-            time = Time.time - startTime;
-            DetermineDifficulty();
-
             //Spawn new combo with random combo type
             if (CanSpawnNewCombo())
             {
@@ -85,7 +78,13 @@ public class ComboGenerator : GameComponent
         float ComboLength = rnd.Next(3, 8);
         switch (difficulty)
         {
+            case Difficulty.VERYEASY:
+                qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
+                distance *= 1.2f;
+                DistanceUntilNextCombo = distance * 1.5f;
+                break;
             case Difficulty.EASY:
+                qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.2f;
                 DistanceUntilNextCombo = distance * 1.5f;
@@ -97,6 +96,12 @@ public class ComboGenerator : GameComponent
                 DistanceUntilNextCombo = distance * 1.4f;
                 break;
             case Difficulty.HARD:
+                qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
+                qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
+                distance *= 1.05f;
+                DistanceUntilNextCombo = distance * 1.2f;
+                break;
+            case Difficulty.VERYHARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
@@ -172,13 +177,39 @@ public class ComboGenerator : GameComponent
 
             QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
             
+            switch (difficulty)
+            {
+                case Difficulty.VERYEASY:
+                    qteC.type = qteTypes[typeCounter];
+                    if (typeCounter + 2 > qteTypes.Count)
+                        typeCounter = 0;
+                    else
+                        typeCounter++;
+                    break;
+                case Difficulty.EASY:
+                    qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
+                    break;
+                case Difficulty.NORMAL:
+                    qteC.type = qteTypes[typeCounter];
+                    if (typeCounter + 2 > qteTypes.Count)
+                        typeCounter = 0;
+                    else
+                        typeCounter++;
+                    break;
+                case Difficulty.HARD:
+                    qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
+                    break;
+                case Difficulty.VERYHARD:
+                    qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
+                    break;
+                case Difficulty.INSANE:
+                    qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
+                    break;
+            }
+
             if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
             {
-                qteC.type = qteTypes[typeCounter];
-                if (typeCounter + 2 > qteTypes.Count)
-                    typeCounter = 0;
-                else
-                    typeCounter++;
+                
             }
             else
             {
@@ -225,6 +256,11 @@ public class ComboGenerator : GameComponent
         comboInProgress = false;
     }
 
+    public void UpdateDifficulty(Difficulty difficulty)
+    {
+        this.difficulty = difficulty;
+    }
+
     private bool CanSpawnNewCombo()
     {
         bool result = false;
@@ -249,26 +285,10 @@ public class ComboGenerator : GameComponent
         return result;
     }
 
-    private void DetermineDifficulty()
-    {
-        if (time > 30)
-        {
-            startTime = Time.time;
-            difficulty++;
-
-            if ((int)difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
-            {
-                difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
-            }
-        }
-    }
-
     public void StartGenerator(bool activate)
     {
         isActive = activate;
         firstTime = true;
-        difficulty = Difficulty.EASY;
-        startTime = Time.time;
     }
 
     public VerticalBounds GetBounds()

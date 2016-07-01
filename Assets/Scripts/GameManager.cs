@@ -62,6 +62,9 @@ public class GameManager : GameComponent {
             }
         } else
         {
+            if (Time.time - time > 30)
+                UpdateDifficulty();
+
             hits.text = pc.GetHits().ToString();
             misses.text = pc.GetMisses().ToString();
             scoreText.text = GetScore().ToString();
@@ -169,10 +172,10 @@ public class GameManager : GameComponent {
     {
         if (init)
         {
-            difficulty = Difficulty.EASY;
+            difficulty = Difficulty.VERYEASY;
         } else
         {
-            if (time > 30)
+            if (Time.time - time > 30)
             {
                 time = Time.time;
                 difficulty++;
@@ -181,6 +184,7 @@ public class GameManager : GameComponent {
                 {
                     difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
                 }
+                cg.UpdateDifficulty(difficulty);
             }
         }
         

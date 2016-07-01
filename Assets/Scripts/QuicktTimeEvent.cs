@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QuickTimeEvent
 {
@@ -16,9 +14,11 @@ namespace QuickTimeEvent
 
     public enum Difficulty
     {
+        VERYEASY,
         EASY,
         NORMAL,
         HARD,
+        VERYHARD,
         INSANE
     }
 
