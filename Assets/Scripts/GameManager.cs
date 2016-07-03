@@ -143,7 +143,7 @@ public class GameManager : GameComponent {
         if (active)
         {
             startTime = time = Time.time;
-            difficulty = 0;
+            UpdateDifficulty(true);
             if (canvas)
             {
                 Destroy(canvas);
@@ -184,11 +184,11 @@ public class GameManager : GameComponent {
                 if ((int)difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
                 {
                     difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
-                }
-                cg.UpdateDifficulty(difficulty);
+                }                
             }
         }
-        
+
+        cg.UpdateDifficulty(difficulty);
     }
 
     void CheckPlayerStatus()
