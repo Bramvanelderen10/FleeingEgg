@@ -19,7 +19,7 @@ public class GameManager : GameComponent {
     public Text hits, misses, scoreText;
     public int maxMisses;
 
-    public AudioManager am;
+    public SoundManager am;
 
     public UnityAds unityAds;
     public DatabaseManager dbm;

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AudioManager : MonoBehaviour {
+public class AudioController : MonoBehaviour {
 
     public AudioClip hit, miss;
     public List<AudioClip> menuSoundtrack;

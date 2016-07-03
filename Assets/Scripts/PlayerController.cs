@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class PlayerController : GameComponent {
 
     public bool dead = false;
-    public AudioManager am;
+    public SoundManager am;
     private Rigidbody2D rb2d;
     //private Rigidbody2D rb2dParent;
     //private MovingEnviromentController mec;
@@ -109,7 +109,7 @@ public class PlayerController : GameComponent {
             if (currentTargetType != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
                 if (am)
-                    am.PlaySFX(AudioManager.Type.Hit);
+                    am.PlaySFX(SoundManager.Type.Hit);
                 hits++;
                 hasMissed = false;
                 isMoving = true;
@@ -209,7 +209,7 @@ public class PlayerController : GameComponent {
             if (currentTargetType != Type.None && type == currentTargetType)
             {
                 if (am)
-                    am.PlaySFX(AudioManager.Type.Hit);
+                    am.PlaySFX(SoundManager.Type.Hit);
                 hasMissed = false;
                 hits++;
                 isMoving = true;
