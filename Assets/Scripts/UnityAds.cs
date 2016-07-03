@@ -6,6 +6,7 @@ public class UnityAds : MonoBehaviour {
 
     public float adFrequency = 150;
     public float inGameTime = 0;
+    public bool enabled = true;
 
     public void AddTime(float seconds)
     {
@@ -14,12 +15,16 @@ public class UnityAds : MonoBehaviour {
 
     public void ShowAd()
     {
-#if UNITY_ANDROID
-        if (inGameTime > adFrequency && Advertisement.IsReady())
+        if (enabled)
         {
-            Advertisement.Show();
-            inGameTime = 0;
-        }
+#if UNITY_ANDROID
+            if (inGameTime > adFrequency && Advertisement.IsReady())
+            {
+                Advertisement.Show();
+                inGameTime = 0;
+            }
 #endif
+        }
+
     }
 }

@@ -143,6 +143,7 @@ public class GameManager : GameComponent {
         if (active)
         {
             startTime = time = Time.time;
+            difficulty = 0;
             if (canvas)
             {
                 Destroy(canvas);
