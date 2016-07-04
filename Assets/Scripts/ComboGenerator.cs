@@ -137,7 +137,7 @@ public class ComboGenerator : GameComponent
         //OPTIONAL VARIABLE FOR DIAGONAL COMBO ONLY
         float upwardDistance = distance / 4f;
         upwardDistance = UnityEngine.Random.Range(upwardDistance, upwardDistance + 2f);
-        float dDistance = distance - 0.5f;
+        float dDistance = distance;
 
         
         for (int i = 0; i < ComboLength; i++)
@@ -157,7 +157,7 @@ public class ComboGenerator : GameComponent
                     if (spawnPosition.y >= 0 && i == 0)
                         curveMultiplier *= -1;
                     spawnPosition.y += (i * i) / curveMultiplier;
-                    spawnPosition.x += (distance * i) / 2;
+                    spawnPosition.x += (distance * i) / 1;
                     spawn.transform.position = spawnPosition;
                     break;
                 case ComboType.DIAGONAL:
@@ -268,7 +268,6 @@ public class ComboGenerator : GameComponent
         {
             firstTime = false;
             result = true;
-            print("TRUE");
             return result;
         }
 

@@ -42,6 +42,11 @@ public class GameManager : GameComponent {
 
     private List<GameObject> rankings;
 
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
 	// Use this for initialization
 	void Start () {
         startButton.GetComponent<Button>().onClick.AddListener(delegate { StartGame(); });

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class PlayerController : GameComponent {
 
+    public bool controlTypeNext = false;
     public bool dead = false;
     public SoundManager am;
     private Rigidbody2D rb2d;
@@ -176,8 +177,18 @@ public class PlayerController : GameComponent {
             currentTargetType = nextTargetType = newType;
         } else
         {
-            currentTargetType = nextTargetType;
-            nextTargetType = newType;
+            if (controlTypeNext)
+            {
+
+                newTarget.GetComponent<QuickTimeEventController>().TriggerPopUp();
+                target.GetChild(0).GetComponent<SpriteRenderer>().color = Color.black;
+                currentTargetType = nextTargetType = newType;
+            } else
+            {
+                currentTargetType = nextTargetType;
+                nextTargetType = newType;
+            }
+                    
         }        
 
         return newTarget;
@@ -213,7 +224,8 @@ public class PlayerController : GameComponent {
                 hasMissed = false;
                 hits++;
                 isMoving = true;
-                target.GetComponent<QuickTimeEventController>().TriggerPopUp();
+                if (!controlTypeNext)
+                    target.GetComponent<QuickTimeEventController>().TriggerPopUp();
             }
         }
     }

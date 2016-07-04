@@ -8,7 +8,6 @@ public class QuickTimeEventController : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("started");
         anim = GetComponent<Animator>();
     }
 
