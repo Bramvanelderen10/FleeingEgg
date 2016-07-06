@@ -39,6 +39,7 @@ public class GameManager : GameComponent {
     private float time;
     private float startTime;
     private Difficulty difficulty;
+    private float difficultyTimer = 5;
 
     private List<GameObject> rankings;
 
@@ -181,7 +182,7 @@ public class GameManager : GameComponent {
             difficulty = Difficulty.VERYEASY;
         } else
         {
-            if (Time.time - time > 30)
+            if (Time.time - time > difficultyTimer)
             {
                 time = Time.time;
                 difficulty++;
@@ -189,6 +190,27 @@ public class GameManager : GameComponent {
                 if ((int)difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
                 {
                     difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
+                }
+                
+                switch (difficulty) {
+                    case Difficulty.VERYEASY:
+                        difficultyTimer = 5;
+                        break;
+                    case Difficulty.EASY:
+                        difficultyTimer = 20;
+                        break;
+                    case Difficulty.NORMAL:
+                        difficultyTimer = 5;
+                        break;
+                    case Difficulty.HARD:
+                        difficultyTimer = 20;
+                        break;
+                    case Difficulty.VERYHARD:
+                        difficultyTimer = 40;
+                        break;
+                    case Difficulty.INSANE:
+                        difficultyTimer = 100;
+                        break;
                 }                
             }
         }
