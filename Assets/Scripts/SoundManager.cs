@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class SoundManager : MonoBehaviour
 {
-
+    public static SoundManager Instance { set; get; }
     public AudioClip hit, miss;
     public List<AudioClip> menuSoundtrack;
     public List<AudioClip> gameSoundtrack;
@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        Instance = this;
         rnd = new System.Random();
     }
 

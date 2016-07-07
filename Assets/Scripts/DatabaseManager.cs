@@ -7,6 +7,7 @@ using System;
 
 public class DatabaseManager : MonoBehaviour
 {
+    public static DatabaseManager Instance;
 
     private string _constr = "URI=file:FlyingLeaderboards.db";
     private string _constr_android = "URI=file:" + Application.persistentDataPath + "/" + "FlyingLeaderboards.db";
@@ -18,6 +19,7 @@ public class DatabaseManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        Instance = this;
         OpenConnection();
         sql = "CREATE TABLE IF NOT EXISTS highscores (name VARCHAR(20), score INT)";
         _command.CommandText = sql;
@@ -27,7 +29,9 @@ public class DatabaseManager : MonoBehaviour
 
     public void OpenConnection()
     {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        _connection = new SqliteConnection(_constr);
+#elif UNITY_ANDROID
         _connection = new SqliteConnection(_constr_android);
 #else
         _connection = new SqliteConnection(_constr);

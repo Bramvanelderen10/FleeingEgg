@@ -98,6 +98,7 @@ public class ComboGenerator : GameComponent
             case Difficulty.HARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
+                qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.05f;
                 DistanceUntilNextCombo = distance * 1.2f;
                 break;
@@ -207,15 +208,6 @@ public class ComboGenerator : GameComponent
                     break;
             }
 
-            if (difficulty == Difficulty.EASY || difficulty == Difficulty.NORMAL)
-            {
-                
-            }
-            else
-            {
-                qteC.type = qteTypes[rnd.Next(0, qteTypes.Count - 1)];
-            }
-
             SpriteRenderer[] sprites = spawn.GetComponentsInChildren<SpriteRenderer>();
 
             foreach (SpriteRenderer sr in sprites)
@@ -296,7 +288,6 @@ public class ComboGenerator : GameComponent
         Camera camera = Camera.main;
         GetCorners(camera, 0, ref corners);
 
-        float distance_x = Vector3.Distance(corners[0], corners[1]);
         float distance_y = Vector3.Distance(corners[0], corners[2]);
 
         float distance = distance_y / 2;

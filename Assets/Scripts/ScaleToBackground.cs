@@ -9,9 +9,7 @@ public class ScaleToBackground : MonoBehaviour {
         Plane,
         Cube,
     }
-
-    private Sprite sprite;
-    private Camera cam;
+    
     public Type type;
 
 	// Use this for initialization
@@ -29,8 +27,6 @@ public class ScaleToBackground : MonoBehaviour {
 
     void ScalePlane()
     {
-        Camera cam = Camera.main;
-
         float height = (float)Camera.main.orthographicSize * 2.0f;
         float width = height * Screen.width / Screen.height;
         transform.localScale = new Vector3(width, height, 1.0f);
@@ -38,8 +34,6 @@ public class ScaleToBackground : MonoBehaviour {
 
     void ScaleSprite()
     {
-        sprite = this.gameObject.GetComponent<SpriteRenderer>().sprite;
-        cam = Camera.main;
         float height = (float)Camera.main.orthographicSize * 2.0f;
         float width = height * Screen.width / Screen.height;
         Vector2 dimensions = new Vector2(width, height);

@@ -20,7 +20,6 @@ public class EnemyPositioning : MonoBehaviour {
         GetCorners(camera, 0, ref corners);
 
         float distance_x = Vector3.Distance(corners[0], corners[1]);
-        float distance_y = Vector3.Distance(corners[0], corners[2]);
 
         float distance = distance_x / 2;
 

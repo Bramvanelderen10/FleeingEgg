@@ -1,30 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.Advertisements;
 using System.Collections;
+using System;
 
-public class UnityAds : MonoBehaviour {
+public class UnityAds : AdManager {
 
-    public float adFrequency = 150;
-    public float inGameTime = 0;
-    public bool enabled = true;
-
-    public void AddTime(float seconds)
+    public override void ShowBanner()
     {
-        inGameTime += seconds;
+        throw new NotImplementedException();
     }
 
-    public void ShowAd()
+    public override void ShowVideo()
     {
         if (enabled)
         {
-#if UNITY_ANDROID
-            if (inGameTime > adFrequency && Advertisement.IsReady())
+#if UNITY_EDITOR
+
+#elif UNITY_ANDROID
+            if (inGameTime > videoAdFrequency && Advertisement.IsReady())
             {
                 Advertisement.Show();
                 inGameTime = 0;
             }
 #endif
         }
-
     }
 }
