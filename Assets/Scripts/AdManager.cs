@@ -21,5 +21,6 @@ public abstract class AdManager : MonoBehaviour {
     }
 
     public abstract void ShowBanner();
-    public abstract void ShowVideo();    
+    public abstract void ShowVideo();
+    public abstract void HideBanner();  
 }

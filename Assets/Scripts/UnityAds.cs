@@ -4,6 +4,10 @@ using System.Collections;
 using System;
 
 public class UnityAds : AdManager {
+    public override void HideBanner()
+    {
+        throw new NotImplementedException();
+    }
 
     public override void ShowBanner()
     {

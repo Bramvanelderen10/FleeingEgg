@@ -240,6 +240,7 @@ public class GameManager : GameComponent {
     {
         float time = Time.time - startTime;
         AdManager.Instance.AddTime(time);
+        AdManager.Instance.ShowBanner();
         score = GetScore();
 
         canvas = Instantiate(EndGameCanvas);
@@ -274,6 +275,7 @@ public class GameManager : GameComponent {
     public void StartGame()
     {
         AdManager.Instance.ShowVideo();
+        AdManager.Instance.HideBanner();
         ActivateGameComponents();
     }
 
@@ -302,7 +304,7 @@ public class GameManager : GameComponent {
             rankings.Add(leaderboardsObject);
 
             Text text = leaderboardsObject.GetComponent<Text>();
-            text.transform.parent = _leaderboard_canvas.transform;
+            text.transform.SetParent(_leaderboard_canvas.transform);
 
             text.rectTransform.anchoredPosition = pos;
             text.text = (i + 1).ToString() + " " + topScore.Key + " " + topScore.Value.ToString();

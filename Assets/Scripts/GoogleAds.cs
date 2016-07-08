@@ -39,4 +39,9 @@ public class GoogleAds : AdManager {
         }
 #endif
     }
+
+    public override void HideBanner()
+    {
+        Admob.Instance().removeBanner();
+    }
 }
