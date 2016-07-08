@@ -9,7 +9,7 @@ required for displaying ads.
     android:versionName="1.0"
     android:versionCode="1">
   <uses-sdk android:minSdkVersion="9"
-      android:targetSdkVersion="19" />
+      android:targetSdkVersion="23" />
   <!-- Google Mobile Ads Permissions -->
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
