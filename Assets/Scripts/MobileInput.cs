@@ -82,4 +82,12 @@ public class MobileInput : MonoBehaviour {
 
         return result;
     }
+
+    public void Reset()
+    {
+        a = false;
+        b = false;
+        x = false;
+        y = false;
+    }
 }

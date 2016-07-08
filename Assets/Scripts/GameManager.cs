@@ -157,6 +157,7 @@ public class GameManager : GameComponent {
 
         _ingame_canvas.SetActive(active);
         _mobile_canvas.GetComponent<MobileControls>().SetActive(active);
+        MobileInput.Instance.Reset();
 
         UpdateDifficulty(true);
 
