@@ -4,55 +4,24 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using QuickTimeEvent;
 
-public class MultiplePressChecker : MonoBehaviour {
-    public PlayerController pc;
-    public List<Button> buttons;
+public class MobileInput : MonoBehaviour {
 
-    bool x = false;
-    bool y = false;
-    bool a = false;
-    bool b = false;
+    public static MobileInput Instance;
+
+    public bool x = false;
+    public bool y = false;
+    public bool a = false;
+    public bool b = false;
 
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+        Instance = this;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (CheckMultiplePresses())
-        {
-            pc.AddMiss();
-        }
 	}
-
-    bool CheckMultiplePresses()
-    {
-        bool result = false;
-        int count = 0;
-        if (x)
-        {
-            count++;
-        }
-        if (y)
-        {
-            count++;
-        }
-        if (a)
-        {
-            count++;
-        }
-        if (b)
-        {
-            count++;
-        }
-
-        if (count > 1)
-            result = true;
-
-        return result;
-    }
 
     public void ButtonUp(string type)
     {
@@ -90,5 +59,27 @@ public class MultiplePressChecker : MonoBehaviour {
                 b = true;
                 break;
         }
+    }
+
+    public bool GetButtonDown(string type) 
+    {
+        bool result = false;
+        switch (type)
+        {
+            case "X":
+                result = x;
+                break;
+            case "Y":
+                result = y;
+                break;
+            case "A":
+                result = a;
+                break;
+            case "B":
+                result = b;
+                break;
+        }
+
+        return result;
     }
 }

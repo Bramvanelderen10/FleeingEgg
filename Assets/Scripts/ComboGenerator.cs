@@ -267,10 +267,6 @@ public class ComboGenerator : GameComponent
         {
             //result = ((enviromentPos.x - lastEnviromentPos.x) > minHorizontalDis);
             result = ((lastQTE.transform.position.x + DistanceUntilNextCombo) < QTESpawn.transform.position.x);
-            if (result)
-            {
-                print("TRUE");
-            }
         }
 
         return result;

@@ -65,7 +65,6 @@ public class GameManager : GameComponent {
             }
         } else
         {
-            print("Time: " + (Time.time - time).ToString());
             if (Time.time - time > difficultyTimer)
                 UpdateDifficulty();
 
@@ -177,7 +176,6 @@ public class GameManager : GameComponent {
             difficulty = Difficulty.VERYEASY;
         } else
         {
-            print("Time: " + (Time.time - time).ToString());
             if (Time.time - time > difficultyTimer)
             {
                 time = Time.time;

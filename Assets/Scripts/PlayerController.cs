@@ -22,8 +22,6 @@ public class PlayerController : GameComponent {
     private int hits = 0;
     private int misses = 0;
 
-    private bool hasMissed = false;
-
     public void Activate(bool activate = true)
     {
         isActive = activate;
@@ -31,19 +29,12 @@ public class PlayerController : GameComponent {
         target = null;
         currentTargetType = Type.None;
         nextTargetType = Type.None;
-        hasMissed = false;
 
         if (activate)
         {
-            hits = misses = 0;
+            hits = 0;
+            misses = 0;
         }
-    }
-
-    // Use this for initialization
-    void Start () {
-        //rb2dParent = transform.parent.gameObject.GetComponent<Rigidbody2D>();
-        //mec = transform.parent.gameObject.GetComponent<MovingEnviromentController>();
-
     }
 	
     void Update()
@@ -59,30 +50,11 @@ public class PlayerController : GameComponent {
         //if ismoving move towards the target
         if (isMoving)
         {
-            if (!hasMissed && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
-            {
-                //m_current_speed = m_current_speed / 3;
-                misses++;
-                hasMissed = true;
-            }
-
             transform.position = Vector3.MoveTowards(transform.position, target.position, m_current_speed * Time.deltaTime);
             if (transform.position == target.transform.position)
             {
-                //target.GetComponent<QuickTimeEventController>().TriggerPopUp();
                 isMoving = false;
-                
-                //Recover lost speed mechanic
-                //Every time the player presses a button a partial of the max speed is recovered
-                if  (m_current_speed < m_speed)
-                {
-                    m_current_speed += (m_speed / 6);
-                }
 
-                if (m_current_speed > m_speed)
-                {
-                    m_current_speed = m_speed;
-                }
                 Transform newTarget = FindNextQTE(target);
                 target = (newTarget) ? newTarget : target;
             }
@@ -94,7 +66,7 @@ public class PlayerController : GameComponent {
             int pressCount = 0;
             foreach (Type enumValue in System.Enum.GetValues(typeof(Type)))
             {
-                if (enumValue != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(enumValue)))
+                if (enumValue != Type.None && GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(enumValue)))
                 {
                     pressCount++;
                 }
@@ -104,11 +76,10 @@ public class PlayerController : GameComponent {
                 misses++;
             }
 
-            if (currentTargetType != Type.None && Input.GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
+            if (currentTargetType != Type.None && GetButtonDown(QuickTimeEvent.Utils.ConvertTypeToString(currentTargetType)))
             {
                 SoundManager.Instance.PlaySFX(SoundManager.Type.Hit);
                 hits++;
-                hasMissed = false;
                 isMoving = true;
                 target.GetComponent<QuickTimeEventController>().TriggerPopUp();
             }
@@ -193,37 +164,7 @@ public class PlayerController : GameComponent {
     public void SetSpeed(float speed)
     {
         this.m_speed = m_current_speed = speed;
-    }
-
-    //This method is a simulation of what would happen with a normal keypress but instead using unity buttons
-    public void OnClick(Type type)
-    {        
-        if (!isActive)
-            return;
-
-        
-        if (isMoving)
-        {           
-            if (!hasMissed && type == currentTargetType)
-            {
-                hasMissed = true;
-                misses++;
-                //m_current_speed = m_current_speed / 3;
-            }            
-        }
-        else if (target != null)
-        {
-            if (currentTargetType != Type.None && type == currentTargetType)
-            {
-                SoundManager.Instance.PlaySFX(SoundManager.Type.Hit);
-                hasMissed = false;
-                hits++;
-                isMoving = true;
-                if (!controlTypeNext)
-                    target.GetComponent<QuickTimeEventController>().TriggerPopUp();
-            }
-        }
-    }
+    }    
 
     public int GetMisses()
     {
@@ -240,5 +181,13 @@ public class PlayerController : GameComponent {
     public void AddMiss()
     {
         misses++;
+    }
+
+    private bool GetButtonDown(string type)
+    {
+        bool result = false;
+        result = (Input.GetButtonDown(type) || MobileInput.Instance.GetButtonDown(type));
+
+        return result;
     }
 }

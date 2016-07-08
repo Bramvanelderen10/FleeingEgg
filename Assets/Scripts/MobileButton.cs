@@ -5,28 +5,28 @@ using QuickTimeEvent;
 
 public class MobileButton : MonoBehaviour {
 
-    public Type type;
-    private PlayerController pc;
+ //   public Type type;
+ //   private PlayerController pc;
 
-	// Use this for initialization
-	void Start () {
-        FindPlayer();
-    }
+	//// Use this for initialization
+	//void Start () {
+ //       FindPlayer();
+ //   }
 	
-	// Update is called once per frame
-	void Update () {
-	    if (!pc)
-        {
-            FindPlayer();
-        }
-	}
+	//// Update is called once per frame
+	//void Update () {
+	//    if (!pc)
+ //       {
+ //           FindPlayer();
+ //       }
+	//}
 
-    void FindPlayer()
-    {
-        if (GameObject.FindGameObjectWithTag("Player"))
-        {
-            pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-            transform.GetComponent<Button>().onClick.AddListener(delegate { pc.OnClick(type); });
-        }
-    }
+ //   void FindPlayer()
+ //   {
+ //       if (GameObject.FindGameObjectWithTag("Player"))
+ //       {
+ //           pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+ //           transform.GetComponent<Button>().onClick.AddListener(delegate { pc.OnClick(type); });
+ //       }
+ //   }
 }
