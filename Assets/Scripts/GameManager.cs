@@ -56,6 +56,10 @@ public class GameManager : GameComponent {
 	void Update () {
         if (!isActive)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
             if (Input.GetButtonDown("Start"))
             {
                 StartGame();
@@ -175,6 +179,7 @@ public class GameManager : GameComponent {
         if (init)
         {
             difficulty = Difficulty.VERYEASY;
+            difficultyTimer = 5;
         } else
         {
             if (Time.time - time > difficultyTimer)
