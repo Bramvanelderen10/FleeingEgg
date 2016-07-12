@@ -12,16 +12,6 @@ namespace QuickTimeEvent
         Y,
     }
 
-    public enum Difficulty
-    {
-        VERYEASY,
-        EASY,
-        NORMAL,
-        HARD,
-        VERYHARD,
-        INSANE
-    }
-
     public class Utils
     {       
         public static string ConvertTypeToString(Type type)

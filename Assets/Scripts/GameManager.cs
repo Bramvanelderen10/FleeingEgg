@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using QuickTimeEvent;
+using Difficulty;
 using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ public class GameManager : GameComponent {
 
     private float time;
     private float startTime;
-    private Difficulty difficulty;
+    private DifficultyLevel difficulty;
     private float difficultyTimer = 5;
 
     private List<GameObject> rankings;
 
     void Awake()
-    {
-        
+    {        
         Application.targetFrameRate = 60;
+        new DifficultyManager();
     }
 
 	// Use this for initialization
@@ -69,8 +68,7 @@ public class GameManager : GameComponent {
             }
         } else
         {
-            if (Time.time - time > difficultyTimer)
-                UpdateDifficulty();
+            DifficultyManager.Instance.Update(Time.time);
 
             _hits.text = pc.GetHits().ToString();
             _misses.text = pc.GetMisses().ToString();
@@ -147,7 +145,7 @@ public class GameManager : GameComponent {
         if (active)
         {
             startTime = time = Time.time;
-            UpdateDifficulty(true);
+            
             if (canvas)
             {
                 Destroy(canvas);
@@ -163,7 +161,7 @@ public class GameManager : GameComponent {
         _mobile_canvas.GetComponent<MobileControls>().SetActive(active);
         MobileInput.Instance.Reset();
 
-        UpdateDifficulty(true);
+        DifficultyManager.Instance.Start(Time.time);
 
         player.GetComponent<PlayerController>().Activate(active);
         mec.isActive = active;
@@ -172,50 +170,6 @@ public class GameManager : GameComponent {
         _leaderboardsButton.SetActive(!active);
 
         _comboGen.StartGenerator(active);        
-    }
-
-    void UpdateDifficulty(bool init = false)
-    {
-        if (init)
-        {
-            difficulty = Difficulty.VERYEASY;
-            difficultyTimer = 5;
-        } else
-        {
-            if (Time.time - time > difficultyTimer)
-            {
-                time = Time.time;
-                difficulty++;
-
-                if ((int)difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
-                {
-                    difficulty = (Difficulty)Enum.GetNames(typeof(Difficulty)).Length - 1;
-                }
-                
-                switch (difficulty) {
-                    case Difficulty.VERYEASY:
-                        difficultyTimer = 5;
-                        break;
-                    case Difficulty.EASY:
-                        difficultyTimer = 10;
-                        break;
-                    case Difficulty.NORMAL:
-                        difficultyTimer = 15;
-                        break;
-                    case Difficulty.HARD:
-                        difficultyTimer = 1;
-                        break;
-                    case Difficulty.VERYHARD:
-                        difficultyTimer = 20;
-                        break;
-                    case Difficulty.INSANE:
-                        difficultyTimer = 100;
-                        break;
-                }                
-            }
-        }
-
-        _comboGen.UpdateDifficulty(difficulty);
     }
 
     void CheckPlayerStatus()

@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using FlyingEggUtils;
 using System.Collections.Generic;
-using QuickTimeEvent;
+using Difficulty;
 
 public class ComboGenerator : GameComponent
 {
@@ -31,8 +31,6 @@ public class ComboGenerator : GameComponent
     private bool firstTime = true;
 
     private VerticalBounds bounds;
-
-    private Difficulty difficulty = 0;
     
 	// Use this for initialization
 	void Start () {
@@ -76,40 +74,40 @@ public class ComboGenerator : GameComponent
         List<QuickTimeEvent.Type> qteTypes = new List<QuickTimeEvent.Type>();
         Vector3 start = QTESpawn.transform.position;
         float ComboLength = rnd.Next(3, 8);
-        switch (difficulty)
+        switch (DifficultyManager.Instance.GetDifficulty())
         {
-            case Difficulty.VERYEASY:
+            case DifficultyLevel.VERYEASY:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.2f;
                 DistanceUntilNextCombo = distance * 1.5f;
                 break;
-            case Difficulty.EASY:
+            case DifficultyLevel.EASY:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.2f;
                 DistanceUntilNextCombo = distance * 1.5f;
                 break;
-            case Difficulty.NORMAL:
+            case DifficultyLevel.NORMAL:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.1f;
                 DistanceUntilNextCombo = distance * 1.4f;
                 break;
-            case Difficulty.HARD:
+            case DifficultyLevel.HARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.05f;
                 DistanceUntilNextCombo = distance * 1.2f;
                 break;
-            case Difficulty.VERYHARD:
+            case DifficultyLevel.VERYHARD:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 distance *= 1.05f;
                 DistanceUntilNextCombo = distance * 1.2f;
                 break;
-            case Difficulty.INSANE:
+            case DifficultyLevel.INSANE:
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
                 qteTypes.Add(QuickTimeEvent.Utils.GetRandomType(rnd, qteTypes));
@@ -178,32 +176,32 @@ public class ComboGenerator : GameComponent
 
             QuickTimeEventController qteC = spawn.GetComponent<QuickTimeEventController>();
             
-            switch (difficulty)
+            switch (DifficultyManager.Instance.GetDifficulty())
             {
-                case Difficulty.VERYEASY:
+                case DifficultyLevel.VERYEASY:
                     qteC.type = qteTypes[typeCounter];
                     if (typeCounter + 2 > qteTypes.Count)
                         typeCounter = 0;
                     else
                         typeCounter++;
                     break;
-                case Difficulty.EASY:
+                case DifficultyLevel.EASY:
                     qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
                     break;
-                case Difficulty.NORMAL:
+                case DifficultyLevel.NORMAL:
                     qteC.type = qteTypes[typeCounter];
                     if (typeCounter + 2 > qteTypes.Count)
                         typeCounter = 0;
                     else
                         typeCounter++;
                     break;
-                case Difficulty.HARD:
+                case DifficultyLevel.HARD:
                     qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
                     break;
-                case Difficulty.VERYHARD:
+                case DifficultyLevel.VERYHARD:
                     qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
                     break;
-                case Difficulty.INSANE:
+                case DifficultyLevel.INSANE:
                     qteC.type = qteTypes[rnd.Next(0, qteTypes.Count)];
                     break;
             }
@@ -246,11 +244,6 @@ public class ComboGenerator : GameComponent
         }
 
         comboInProgress = false;
-    }
-
-    public void UpdateDifficulty(Difficulty difficulty)
-    {
-        this.difficulty = difficulty;
     }
 
     private bool CanSpawnNewCombo()

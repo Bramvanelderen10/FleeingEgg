@@ -42,6 +42,10 @@ public class GoogleAds : AdManager {
 
     public override void HideBanner()
     {
+#if UNITY_EDITOR
+
+#elif UNITY_ANDROID
         Admob.Instance().removeBanner();
+#endif
     }
 }
