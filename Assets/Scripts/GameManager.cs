@@ -15,7 +15,7 @@ public class GameManager : GameComponent {
     public Transform _playerSpawn;
 
     public GameObject _mobile_canvas, _ingame_canvas, _leaderboard_canvas, _menu_canvas;
-    public Text _hits, _misses, _scoreText;
+    public Text _hits, _scoreText;
     public int _maxMisses;
 
     public GameObject EndGameCanvas;
@@ -71,7 +71,6 @@ public class GameManager : GameComponent {
             DifficultyManager.Instance.Update(Time.time);
 
             _hits.text = pc.GetHits().ToString();
-            _misses.text = pc.GetMisses().ToString();
             _scoreText.text = GetScore().ToString();
         }
         CheckPlayerStatus();

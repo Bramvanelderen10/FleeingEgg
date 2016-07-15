@@ -71,7 +71,7 @@ public class PlayerController : GameComponent {
                     pressCount++;
                 }
             }
-            if (pressCount > 1)
+            if (pressCount > 2)
             {
                 misses++;
             }

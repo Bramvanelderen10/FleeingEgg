@@ -25,21 +25,21 @@ public class MobileInput : MonoBehaviour {
 
     public void ButtonUp(string type)
     {
-        switch (type)
-        {
-            case "x":
-                x = false;
-                break;
-            case "y":
-                y = false;
-                break;
-            case "a":
-                a = false;
-                break;
-            case "b":
-                b = false;
-                break;
-        }
+        //switch (type)
+        //{
+        //    case "x":
+        //        x = false;
+        //        break;
+        //    case "y":
+        //        y = false;
+        //        break;
+        //    case "a":
+        //        a = false;
+        //        break;
+        //    case "b":
+        //        b = false;
+        //        break;
+        //}
     }
 
     public void ButtonDown(string type)
@@ -47,7 +47,7 @@ public class MobileInput : MonoBehaviour {
         switch (type)
         {
             case "x":
-                x = true;
+                x = true;                
                 break;
             case "y":
                 y = true;
@@ -59,6 +59,8 @@ public class MobileInput : MonoBehaviour {
                 b = true;
                 break;
         }
+
+        StartCoroutine(DisableButton(type));
     }
 
     public bool GetButtonDown(string type) 
@@ -89,5 +91,26 @@ public class MobileInput : MonoBehaviour {
         b = false;
         x = false;
         y = false;
+    }
+
+    IEnumerator DisableButton(string type)
+    {
+        yield return new WaitForFixedUpdate();
+        
+        switch (type)
+        {
+            case "x":
+                x = false;
+                break;
+            case "y":
+                y = false;
+                break;
+            case "a":
+                a = false;
+                break;
+            case "b":
+                b = false;
+                break;
+        }
     }
 }
