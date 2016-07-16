@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using QuickTimeEvent;
 
 public class MobileInput : MonoBehaviour {
 
@@ -22,25 +19,6 @@ public class MobileInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	}
-
-    public void ButtonUp(string type)
-    {
-        //switch (type)
-        //{
-        //    case "x":
-        //        x = false;
-        //        break;
-        //    case "y":
-        //        y = false;
-        //        break;
-        //    case "a":
-        //        a = false;
-        //        break;
-        //    case "b":
-        //        b = false;
-        //        break;
-        //}
-    }
 
     public void ButtonDown(string type)
     {
